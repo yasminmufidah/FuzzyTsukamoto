@@ -1,4 +1,5 @@
 from tkinter import *
+import numpy as np
 
 root = Tk()
 root.geometry("1280x900")
@@ -133,6 +134,7 @@ def Inference():
 			# Output3.insert(END, alpha)
 			alpha_out.append(alpha)
 
+	#menghitung nilai z
 	var_out = [0,0,1,0,0,1,2,0,1,1,1,2,2,2,2]
 	z_out = []
 	for i in var_out:
@@ -148,7 +150,16 @@ def Inference():
 			# Kategori = 'Bahaya'
 			z = (alpha_out[var_out.index(i)]*50) + 50
 		z_out.append(z)
-		Output3.insert(END, str(z))
+		
+
+	# Defuzzifikasi
+	nilai_defuzzifikasi = 0
+	for i in z_out:
+
+		nilai_defuzzifikasi += alpha_out[z_out.index(i)]*i
+	
+	a = nilai_defuzzifikasi / np.sum(alpha_out)
+	Output3.insert(END, str(a))
 
 l1 = Label(text = "Input Kecepatan Angin (km/jam)")
 l1.configure(bg=defaultcolor, font='helvetica')
