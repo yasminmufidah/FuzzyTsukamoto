@@ -43,7 +43,6 @@ def Inference():
 	inp2 = inputtxt2.get(1.0, "end-1c")
 	inp2 = float(inp2)
 	var2 = [0,0,0,1,1,1,2,0,0,0,1,1,1,2,3]
-	Output3.insert(END, str(inp2))
 	myu_2 = []
 	for i in var2:
 		if i == 0:
@@ -74,6 +73,7 @@ def Inference():
 			Output1.insert(END,str(myu2))
 		elif i == 3 :
 			myu2 = 0
+			Output1.insert(END,str(myu2))
 		myu_2.append(myu2)
 
 	inp3 = inputtxt3.get(1.0, "end-1c")
@@ -109,10 +109,46 @@ def Inference():
 			Output2.insert(END,str(myu3))
 		elif i == 3 :
 			myu3 = 0
+			Output2.insert(END,str(myu3))
 		myu_3.append(myu3)
 
-	# alpha = min(myu1, myu2, myu3)
-	# Output3.insert(END, alpha)
+	# menghitung nilai alpha 
+	# mencari nilai minimum dari setiap rule
+	alpha_out = []
+	for i in range(0,15):
+		if i == 6 :
+			alpha = min(myu_1[i], myu_2[i])
+			# Output3.insert(END, alpha)
+			alpha_out.append(alpha)
+		elif i == 13 :
+			alpha = min(myu_1[i], myu_2[i])
+			# Output3.insert(END, alpha)
+			alpha_out.append(alpha)
+		elif i == 14 :
+			alpha = myu_1[i]
+			# Output3.insert(END, alpha)
+			alpha_out.append(alpha)
+		else:
+			alpha = min(myu_1[i], myu_2[i], myu_3[i])
+			# Output3.insert(END, alpha)
+			alpha_out.append(alpha)
+
+	var_out = [0,0,1,0,0,1,2,0,1,1,1,2,2,2,2]
+	z_out = []
+	for i in var_out:
+		if i == 0 :
+			# Kategori = 'Aman'
+			z = 50 - (alpha_out[var_out.index(i)]*10)
+		elif i == 1 :
+			# Kategori = 'Waspada'
+			z1 = (alpha_out[var_out.index(i)]*10) + 40
+			z2 = 60 - (alpha_out[var_out.index(i)]*10)
+			z = (z1+z2)/2
+		else:
+			# Kategori = 'Bahaya'
+			z = (alpha_out[var_out.index(i)]*50) + 50
+		z_out.append(z)
+		Output3.insert(END, str(z))
 
 l1 = Label(text = "Input Kecepatan Angin (km/jam)")
 l1.configure(bg=defaultcolor, font='helvetica')
@@ -147,6 +183,9 @@ Output2 = Text(root, height = 3,
 Output3 = Text(root, height = 3,
 			width = 25,
 			bg = "light cyan", font='poppins')
+Output4 = Text(root, height = 3,
+			width = 25,
+			bg = "light cyan", font='poppins')
 Display = Button(root, height = 2,
 				width = 20,
 				text ="Show",
@@ -166,5 +205,6 @@ Output1.pack()
 l6.pack()
 Output2.pack()
 Output3.pack()
+Output4.pack()
 
 mainloop()
