@@ -7,7 +7,7 @@ class RefiEval:
         master = Tk()
         master.title("Prediksi Resiko Pelayaran")
         master.configure(background='antiquewhite1')
-        master.geometry("700x400")
+        master.geometry("600x400")
  
        
         heading = Label(master, text='Prediksi Resiko Pelayaran', font = ('Helvetica', 15, 'bold'), background="antiquewhite1").grid(row=0, column=3, ipady=8, pady=10)
@@ -170,26 +170,28 @@ class RefiEval:
         # perhitungan nilai z
         var_out = [0,0,1,0,0,1,2,0,1,1,1,2,2,2,2]
         z_out = []
-        for i in range(0,15):
-            if var_out[i] == 0 :
+        for i in var_out:
+            if i == 0 :
                 # Kategori = 'Aman'
-                z = 50 - (alpha_out[i]*10)
-            elif var_out[i] == 1 :
+                z = 50 - (alpha_out[var_out.index(i)]*10)
+            elif i == 1 :
                 # Kategori = 'Waspada'
-                z1 = (alpha_out[i]*10) + 40
-                z2 = 60 - (alpha_out[i]*10)
+                z1 = (alpha_out[var_out.index(i)]*10) + 40
+                z2 = 60 - (alpha_out[var_out.index(i)]*10)
                 z = (z1+z2)/2
             else:
                 # Kategori = 'Bahaya'
-                z = (alpha_out[i]*50) + 50
+                z = (alpha_out[var_out.index(i)]*50) + 50
             z_out.append(z)
 
         # Defuzzifikasi
         nilai_defuzzifikasi = 0
         x = float(nilai_defuzzifikasi)
+
         for i in range(0,15):
-            x += (alpha_out[i]*z_out[i])
-        a = (x / np.sum(alpha_out))
+            x = x + (alpha_out[i]*z_out[i])
+    
+        a = x / np.sum(alpha_out)
 
 		# perhitungan kategori resiko dan derajat keanggotaannya
         dk = 0
