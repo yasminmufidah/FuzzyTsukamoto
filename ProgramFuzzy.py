@@ -170,23 +170,22 @@ class RefiEval:
         # perhitungan nilai z
         var_out = [0,0,1,0,0,1,2,0,1,1,1,2,2,2,2]
         z_out = []
-        for i in var_out:
-            if i == 0 :
+        for i in range(0,15):
+            if var_out[i] == 0 :
                 # Kategori = 'Aman'
-                z = 50 - (alpha_out[var_out.index(i)]*10)
-            elif i == 1 :
+                z = 50 - (alpha_out[i]*10)
+            elif var_out[i] == 1 :
                 # Kategori = 'Waspada'
-                z1 = (alpha_out[var_out.index(i)]*10) + 40
-                z2 = 60 - (alpha_out[var_out.index(i)]*10)
+                z1 = (alpha_out[i]*10) + 40
+                z2 = 60 - (alpha_out[i]*10)
                 z = (z1+z2)/2
-            else:
+            elif var_out[i] == 2:
                 # Kategori = 'Bahaya'
-                z = (alpha_out[var_out.index(i)]*50) + 50
+                z = (alpha_out[i]*50) + 50
             z_out.append(z)
 
         # Defuzzifikasi
-        nilai_defuzzifikasi = 0
-        x = float(nilai_defuzzifikasi)
+        x = 0.00
 
         for i in range(0,15):
             x = x + (alpha_out[i]*z_out[i])
@@ -203,7 +202,7 @@ class RefiEval:
                 dk = (50 - a)/(50-40)
             elif a >= 50:
                 dk = 0
-        elif a > 40 and a < 60 :
+        if a > 50 and a < 60 :
             Kategori = 'Waspada'
             if a <= 40:
                 dk = 0
@@ -213,11 +212,11 @@ class RefiEval:
                 dk = (60 - a)/(60-50)
             elif a >= 60:
                 dk = 0
-        if a > 50 and a < 100 :
+        if a > 60 and a < 100 :
             Kategori = 'Bahaya'
             if a <= 50:
                 dk = 0
-            elif a > 40 and a < 50:
+            elif a > 40 and a < 60:
                 dk = (a - 50)/(100-50)
             elif a >= 50:
                 dk = 1
